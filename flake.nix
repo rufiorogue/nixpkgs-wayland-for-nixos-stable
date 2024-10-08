@@ -124,6 +124,7 @@
               attrName = "sway-unwrapped";
               extra.buildInputs = [ prev.xorg.xcbutilwm ];
               replaceInput = {
+		wayland = prev.callPackage ./pkgs/wayland { };
                 wlroots = final.wlroots;
                 wayland-protocols = final.new-wayland-protocols;
                 # https://nixpk.gs/pr-tracker.html?pr=323012
@@ -156,7 +157,7 @@
               attrName = "cage";
               extra.buildInputs = [ prev.xorg.xcbutilwm ];
               replaceInput = {
-                wlroots = prev.wlroots_0_18;
+                wlroots = prev.wlroots_0_17;
               };
               # _FORTIFY_SOURCE requires compiling with optimization (-O)
               # PR https://github.com/NixOS/nixpkgs/pull/232917 added -O0
@@ -305,7 +306,11 @@
             # };
             wldash = prev.callPackage ./pkgs/wldash { };
             wlroots = prev.callPackage ./pkgs/wlroots {
-              wlroots = prev.wlroots_0_18;
+              wlroots = prev.wlroots_0_17;
+              wayland = prev.callPackage ./pkgs/wayland { };
+              mesa = prev.callPackage ./pkgs/mesa {
+		libdrm = prev.callPackage ./pkgs/libdrm { };
+	      };
               wayland-protocols = final.new-wayland-protocols;
             };
 

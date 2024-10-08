@@ -5,6 +5,7 @@ args_@{
   libdisplay-info,
   hwdata,
   lcms2,
+  mesa,
   ...
 }:
 
@@ -24,6 +25,7 @@ in
     hwdata
     libdisplay-info
     lcms2
+    mesa
   ];
   src = fetchFromGitLab {
     inherit (metadata)
