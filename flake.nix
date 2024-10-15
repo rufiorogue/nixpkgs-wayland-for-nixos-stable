@@ -247,6 +247,20 @@
                     previousAttrs.postInstall;
               };
             }
+            {
+              attrName = "neatvnc";
+              replaceInput = {
+                ffmpeg = prev.ffmpeg_7;
+              };
+            }
+            {
+              attrName = "waypipe";
+              extra = {
+                depsBuildBuild = [ prev.pkg-config ];
+                nativeBuildInputs = [ prev.pkg-config prev.wayland-scanner ];
+                buildInputs = [ prev.wayland ];
+              };
+            }
           ];
 
           # these do not need changes from the package that nixpkgs has
@@ -257,7 +271,6 @@
                 "glpaper"
                 "imv"
                 "mako"
-                "neatvnc"
                 "slurp"
                 "swaybg"
                 "swayidle"
@@ -275,7 +288,6 @@
                 "lavalauncher"
                 "wlsunset"
                 "rootbar"
-                "waypipe"
                 "sirula"
                 "swww"
                 "wlay"
