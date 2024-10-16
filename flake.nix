@@ -3,7 +3,7 @@
 
   inputs = {
     nixpkgs = {
-      url = "github:nixos/nixpkgs/nixos-unstable";
+      url = "github:nixos/nixpkgs/nixos-24.05";
     };
     lib-aggregate = {
       url = "github:nix-community/lib-aggregate";
@@ -124,7 +124,7 @@
               attrName = "sway-unwrapped";
               extra.buildInputs = [ prev.xorg.xcbutilwm ];
               replaceInput = {
-		wayland = prev.callPackage ./pkgs/wayland { };
+		wayland = final.new-wayland;
                 wlroots = final.wlroots;
                 wayland-protocols = final.new-wayland-protocols;
                 # https://nixpk.gs/pr-tracker.html?pr=323012
@@ -212,6 +212,7 @@
             {
               attrName = "new-wayland-protocols";
               nixpkgsAttrName = "wayland-protocols";
+	      extra.nativeBuildInputs = [ final.new-wayland-scanner ];
             }
             # {
             #   attrName = "wl-screenrec";
@@ -257,8 +258,8 @@
               attrName = "waypipe";
               extra = {
                 depsBuildBuild = [ prev.pkg-config ];
-                nativeBuildInputs = [ prev.pkg-config prev.wayland-scanner ];
-                buildInputs = [ prev.wayland ];
+                nativeBuildInputs = [ prev.pkg-config final.new-wayland-scanner ];
+                buildInputs = [ final.new-wayland ];
               };
             }
           ];
@@ -316,10 +317,14 @@
             #     attrName = "wlrobs";
             #   };
             # };
+            new-wayland = prev.callPackage ./pkgs/wayland { };
+            new-wayland-scanner = prev.callPackage ./pkgs/wayland-scanner {
+	      wayland = new-wayland;
+	    };
             wldash = prev.callPackage ./pkgs/wldash { };
             wlroots = prev.callPackage ./pkgs/wlroots {
               wlroots = prev.wlroots_0_17;
-              wayland = prev.callPackage ./pkgs/wayland { };
+              wayland = new-wayland;
               mesa = prev.callPackage ./pkgs/mesa {
 		libdrm = prev.callPackage ./pkgs/libdrm { };
 	      };
