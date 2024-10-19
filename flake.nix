@@ -317,17 +317,31 @@
             #     attrName = "wlrobs";
             #   };
             # };
+	    new-libdrm = prev.callPackage ./pkgs/libdrm { };
+            new-mesa = prev.callPackage ./pkgs/mesa {
+	      libdrm = new-libdrm;
+	    };
             new-wayland = prev.callPackage ./pkgs/wayland { };
             new-wayland-scanner = prev.callPackage ./pkgs/wayland-scanner {
 	      wayland = new-wayland;
+	    };
+            new-xwayland = prev.callPackage ./pkgs/xwayland {
+	      wayland = new-wayland;
+	      wayland-scanner = new-wayland-scanner;
+	      wayland-protocols = final.new-wayland-protocols;
+
+	      mesa = prev.mesa;
+	      libdrm = prev.libdrm;
+	      # note: if using new-... then Xwayland crashes on launch
+	      #mesa = new-mesa;
+	      #libdrm = new-libdrm;
 	    };
             wldash = prev.callPackage ./pkgs/wldash { };
             wlroots = prev.callPackage ./pkgs/wlroots {
               wlroots = prev.wlroots_0_17;
               wayland = new-wayland;
-              mesa = prev.callPackage ./pkgs/mesa {
-		libdrm = prev.callPackage ./pkgs/libdrm { };
-	      };
+              xwayland = new-xwayland;
+              mesa = new-mesa;
               wayland-protocols = final.new-wayland-protocols;
             };
 

@@ -6,6 +6,7 @@ args_@{
   hwdata,
   lcms2,
   mesa,
+  xwayland,
   ...
 }:
 
@@ -26,6 +27,7 @@ in
     libdisplay-info
     lcms2
     mesa
+    xwayland
   ];
   src = fetchFromGitLab {
     inherit (metadata)
